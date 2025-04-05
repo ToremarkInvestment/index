@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toremark Investments</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta
+      name="description"
+      content="Toremark Investments AB is a Swedish limited company focused on acquiring shares in listed companies."
+    />
+    <meta name="author" content="Toremark Investments" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div id="custom-cursor"></div>
+
+    <header class="navbar">
+      <div class="container">
+        <div class="logo" onclick="scrollToTop()">
+          <img
+            src="Logo.png"
+            alt="Toremark Investments Logo"
+            class="logo-img"
+          />
+        </div>
+
+        <nav class="nav-menu">
+          <a href="#" onclick="scrollToTop()">Home</a>
+          <a href="#content" onclick="scrollToSection('content')">About us</a>
+          <a href="#contact" onclick="scrollToSection('contact')">Contact</a>
+        </nav>
+
+        <button class="mobile-menu-button" onclick="toggleMenu()">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+      </div>
+
+      <div class="mobile-menu">
+        <a href="#" onclick="mobileMenuClick('top')">Home</a>
+        <a href="#content" onclick="mobileMenuClick('content')">About us</a>
+        <a href="#contact" onclick="mobileMenuClick('contact')">Contact</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+          <h1 class="hero-title animate-fade-in" style="animation-delay: 0.2s">
+            Focused <span>investments</span> in undervalued listed companies
+          </h1>
+          <p class="hero-text animate-fade-in" style="animation-delay: 0.5s">
+            Applying research and data to drive our decision-making.
+          </p>
+          <div class="animate-fade-in" style="animation-delay: 0.8s">
+            <button class="hero-button" onclick="scrollToSection('content')">
+              Learn more about us
+            </button>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <button onclick="scrollToSection('content')" aria-label="Scroll down">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <div id="content" class="scroll-target">
+        <section class="about-section">
+          <div class="container">
+            <div class="max-width-3xl">
+              <h2 class="section-title font-serif">Toremark Investments</h2>
+              <div class="section-divider"></div>
+
+              <div class="about-content">
+                <div class="about-text">
+                  <p class="section-text">
+                    Toremark Investments AB is a Swedish limited company focused
+                    on acquiring shares in listed companies, primarily in the
+                    Nordic region. We target
+                    companies with market cap below €4.5 billion, specializing
+                    in sectors such as
+                    <span class="highlight-text">Real Estate</span>,
+                    <span class="highlight-text">Finance</span>,
+                    <span class="highlight-text">Energy</span>,
+                    <span class="highlight-text">Shipping</span>, and
+                    <span class="highlight-text">Industry</span>.
+                  </p>
+                </div>
+                <div class="about-image-container">
+                  <img
+                    src="About.jpg"
+                    alt="Abstract financial visualization"
+                    class="about-image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+          <div class="container">
+            <div class="max-width-3xl">
+              <h2 class="section-title font-serif">Contact</h2>
+              <div class="section-divider"></div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-info">
+                <h3 class="contact-title font-serif">Contact Information</h3>
+
+                <div class="contact-details">
+                  <div class="contact-item">
+                    <!-- Map Pin icon -->
+                    <svg
+                      class="contact-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
+                      ></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <div>
+                      <p>Toremark Investments AB</p>
+                      <p>Stockholm, Sweden</p>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <!-- Mail icon -->
+                    <svg
+                      class="contact-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                      <path
+                        d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                      ></path>
+                    </svg>
+                    <a href="mailto:info@toremarks.com"> info@toremarks.com </a>
+                  </div>
+
+                  <div class="contact-item">
+                    <!-- Globe icon -->
+                    <svg
+                      class="contact-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" x2="22" y1="12" y2="12"></line>
+                      <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                      ></path>
+                    </svg>
+                    <a
+                      href="https://www.toremarks.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      www.toremarks.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-form">
+                <h3 class="contact-title font-serif">Contact Us</h3>
+                <p class="contact-text">
+                    For any inquiries regarding Toremark Investments, please email us, and we will respond as soon as possible.
+                </p>
+
+                <div class="contact-action">
+                  <a href="mailto:info@toremarks.com" class="contact-button">
+                    <!-- Mail icon -->
+                    <svg
+                      class="contact-icon"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      style="margin-right: 8px"
+                    >
+                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                      <path
+                        d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                      ></path>
+                    </svg>
+                    Send Email
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo" onclick="scrollToTop()">
+              <img src="Logo.png" alt="Toremark Investments Logo" />
+            </div>
+            <p class="footer-text">
+              Toremark Investments AB is a Swedish limited company focused on
+              acquiring shares in listed companies.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-heading font-serif">Quick Links</h3>
+            <nav class="footer-nav">
+              <button onclick="scrollToTop()">Home</button>
+              <button onclick="scrollToSection('content')">About us</button>
+              <button onclick="scrollToSection('contact')">Contact</button>
+            </nav>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-heading font-serif">Contact</h3>
+            <address class="footer-address">
+              <div class="footer-email">
+                <!-- Mail icon -->
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="margin-right: 8px"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+                <a href="mailto:info@toremarks.com"> info@toremarks.com </a>
+              </div>
+            </address>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            &copy; <span id="currentYear"></span> Toremark Investments AB. All
+            rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
