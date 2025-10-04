@@ -46,7 +46,9 @@
           var(--header-h) + env(safe-area-inset-top, 0px)
         );
         scroll-behavior: auto;
-        background: var(--contact-bg);
+        background: var(
+          --contact-bg
+        ); /* default bakgrund (bra för botten-bounce) */
       }
 
       body {
@@ -96,8 +98,9 @@
         display: flex;
         align-items: center;
 
-        /* GPU-hint mot 1px-hairline på iOS */
+        /* GPU-hints mot hairline */
         backface-visibility: hidden;
+        -webkit-backface-visibility: hidden; /* tillagd */
         transform: translateZ(0);
       }
       .nav {
@@ -108,7 +111,7 @@
         width: 100%;
       }
 
-      /* iOS hairline-täckare högst upp (målar statusradsinset) */
+      /* iOS hairline-täckare högst upp (grundvariant) */
       body::before {
         content: "";
         position: fixed;
@@ -396,8 +399,18 @@
         }
       }
 
-      /* Mobil PORTRÄTT */
+      /* Mobil PORTRÄTT – här lägger vi hårdare anti-hairline fix */
       @media (max-width: 768px) and (orientation: portrait) {
+        /* Se till att toppen alltid målas i headerns färg i porträtt */
+        html {
+          background: var(--hero-bg);
+        }
+
+        /* Lägg till 1px buffert på täcklagret för att dölja hairline */
+        body::before {
+          height: calc(env(safe-area-inset-top, 0px) + 1px);
+        }
+
         nav {
           display: none;
         }
@@ -405,16 +418,18 @@
           display: block;
           margin-left: auto;
         }
+
         .card {
           aspect-ratio: 2 / 1;
         }
+
         #contact {
-          padding-top: calc(clamp(60px, 12vw, 140px) * 3.4);
-          padding-bottom: calc(clamp(60px, 12vw, 140px) * 3.8);
+          padding-top: calc(clamp(60px, 12vw, 140px) * 3);
+          padding-bottom: calc(clamp(60px, 12vw, 140px) * 4);
         }
       }
 
-      /* MOBILE LANDSCAPE: 3 kolumner + större rubrikstorlek */
+      /* MOBILE LANDSCAPE: 3 kolumner + större rubrikstorlek (oförändrat) */
       @media (max-width: 768px) and (orientation: landscape) {
         nav {
           display: none;
@@ -433,7 +448,7 @@
         }
 
         .sector-grid .card h3 {
-          font-size: clamp(26px, 6vw, 36px); /* justerbar */
+          font-size: clamp(26px, 6vw, 36px);
           line-height: 1.05;
         }
 
