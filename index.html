@@ -47,9 +47,8 @@
           var(--header-h) + env(safe-area-inset-top, 0px)
         );
         scroll-behavior: auto; /* smooth hanteras i JS för stabilitet */
-        /* Fix 1: ge viewporten samma färg som sista sektionen + dämpa bounce */
+        /* Samma färg som sista sektionen för att maskera ev. bounce-kant */
         background: var(--contact-bg);
-        overscroll-behavior-y: none;
       }
 
       body {
@@ -60,7 +59,6 @@
         color: #0e0e0e;
         background: #fff;
         cursor: none; /* döljs på touch via @media (pointer: coarse) */
-        overscroll-behavior-y: none; /* Fix 1 forts. */
         min-height: 100%;
       }
 
@@ -82,12 +80,10 @@
         max-width: 100%;
         height: auto;
       }
-
       a {
         color: inherit;
         text-decoration: none;
       }
-
       section {
         padding: clamp(40px, 8vw, 100px) var(--pad);
       }
@@ -311,12 +307,10 @@
         color: var(--contact-ink);
         padding-left: var(--pad);
         padding-right: var(--pad);
-        /* säkerställ ingen oväntad marginal dyker upp från barn */
       }
       .contact-title {
         font-size: clamp(22px, 4.2vw, 36px);
         margin-bottom: var(--contact-gap);
-        color: var(--contact-ink);
       }
       #contact p,
       #contact a {
@@ -341,7 +335,7 @@
         color: #ffffff;
       }
 
-      /* Fix 2: fyll ut iOS safe-area i botten så ingen kant syns */
+      /* Safe-area-filler i botten så ingen kant syns vid bounce/adressfält */
       #contact::after {
         content: "";
         display: block;
@@ -403,7 +397,7 @@
         }
 
         #contact {
-          /* Fix 3: minska onödig extra scroll i botten */
+          /* Lite kortare så botten inte känns “för lång” */
           padding-top: calc(clamp(60px, 12vw, 140px) * 3);
           padding-bottom: calc(clamp(60px, 12vw, 140px) * 3.8);
         }
