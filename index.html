@@ -95,6 +95,10 @@
         height: var(--header-h);
         display: flex;
         align-items: center;
+
+        /* GPU-hint mot 1px-hairline på iOS */
+        backface-visibility: hidden;
+        transform: translateZ(0);
       }
       .nav {
         display: flex;
@@ -102,6 +106,19 @@
         padding: 10px var(--pad);
         gap: 16px;
         width: 100%;
+      }
+
+      /* iOS hairline-täckare högst upp (målar statusradsinset) */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top, 0px);
+        background: var(--hero-bg);
+        z-index: 1001;
+        pointer-events: none;
       }
 
       /* LOGO crossfade */
@@ -379,7 +396,7 @@
         }
       }
 
-      /* Mobil PORTRÄTT: (oförändrat) */
+      /* Mobil PORTRÄTT */
       @media (max-width: 768px) and (orientation: portrait) {
         nav {
           display: none;
@@ -397,7 +414,7 @@
         }
       }
 
-      /* MOBILE LANDSCAPE: 3 kolumner + mindre rubrikstorlek */
+      /* MOBILE LANDSCAPE: 3 kolumner + större rubrikstorlek */
       @media (max-width: 768px) and (orientation: landscape) {
         nav {
           display: none;
@@ -415,11 +432,14 @@
           aspect-ratio: 1 / 1;
         }
 
-        /* Ändra bara detta värde om du vill tweak:a storleken i landskap: */
         .sector-grid .card h3 {
-         font-size: clamp(26px, 6vw, 36px);
-          /* ^— sänk/höj siffrorna 18 / 24 för mindre/större text */
+          font-size: clamp(26px, 6vw, 36px); /* justerbar */
           line-height: 1.05;
+        }
+
+        #contact {
+          padding-top: calc(clamp(60px, 12vw, 140px) * 2.5);
+          padding-bottom: calc(clamp(60px, 12vw, 140px) * 3.2);
         }
       }
 
