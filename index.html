@@ -32,7 +32,7 @@
         --contact-gap: 48px;
         --contact-top-extra: 80px;
         --contact-bottom-extra: 120px;
-        --header-h: 70px; /* sticky headerns höjd */
+        --header-h: 70px;
       }
 
       * {
@@ -41,13 +41,11 @@
         padding: 0;
       }
 
-      /* Låt CSS sköta offset för ankar-scroll (hanterar sticky header + iOS safe area) */
       html {
         scroll-padding-top: calc(
           var(--header-h) + env(safe-area-inset-top, 0px)
         );
-        scroll-behavior: auto; /* smooth hanteras i JS för stabilitet */
-        /* Samma färg som sista sektionen för att maskera ev. bounce-kant */
+        scroll-behavior: auto;
         background: var(--contact-bg);
       }
 
@@ -58,7 +56,7 @@
         line-height: 1.6;
         color: #0e0e0e;
         background: #fff;
-        cursor: none; /* döljs på touch via @media (pointer: coarse) */
+        cursor: none;
         min-height: 100%;
       }
 
@@ -147,7 +145,6 @@
         margin: 0;
       }
 
-      /* Menylänkar (desktop) vita */
       nav a {
         color: #ffffff;
       }
@@ -231,7 +228,7 @@
         height: 70vh;
         overflow: hidden;
         background: #000;
-        position: relative; /* overlay */
+        position: relative;
       }
       .hero-video video {
         width: 100%;
@@ -242,7 +239,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(107, 18, 24, 0.1); /* 10% overlay */
+        background: rgba(107, 18, 24, 0.1);
         pointer-events: none;
       }
 
@@ -283,7 +280,10 @@
       }
       .sector-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(250px, 1fr)
+        ); /* default */
         gap: 20px;
       }
       .card {
@@ -335,7 +335,6 @@
         color: #ffffff;
       }
 
-      /* Safe-area-filler i botten så ingen kant syns vid bounce/adressfält */
       #contact::after {
         content: "";
         display: block;
@@ -367,7 +366,6 @@
         cursor: none;
       }
 
-      /* Dölj custom cursor på touch / ”coarse” pointer (mobil/surfplatta) */
       @media (pointer: coarse) {
         body {
           cursor: auto;
@@ -383,8 +381,8 @@
         }
       }
 
-      /* Mobil */
-      @media (max-width: 768px) {
+      /* Mobil PORTRÄTT: (oförändrat) */
+      @media (max-width: 768px) and (orientation: portrait) {
         nav {
           display: none;
         }
@@ -394,12 +392,29 @@
         }
         .card {
           aspect-ratio: 2 / 1;
-        }
-
+        } /* din tidigare mobil-aspekt för porträtt */
         #contact {
-          /* Lite kortare så botten inte känns “för lång” */
           padding-top: calc(clamp(60px, 12vw, 140px) * 3);
           padding-bottom: calc(clamp(60px, 12vw, 140px) * 3.8);
+        }
+      }
+
+      /* MOBILE LANDSCAPE: 3 kolumner (alla tre kort på samma rad) */
+      @media (max-width: 768px) and (orientation: landscape) {
+        nav {
+          display: none;
+        }
+        .hamburger {
+          display: block;
+          margin-left: auto;
+        }
+
+        .sector-grid {
+          grid-template-columns: repeat(3, 1fr); /* exakt tre kolumner */
+          gap: 12px; /* lite tajtare mellanrum */
+        }
+        .sector-grid .card {
+          aspect-ratio: 1 / 1; /* kvadratiska så de får plats */
         }
       }
 
@@ -500,7 +515,7 @@
     <div class="cursor" id="cursor"></div>
 
     <script>
-      // --- Custom cursor: endast på "fine" pointer (desktop) ---
+      // Custom cursor
       const isFinePointer = window.matchMedia("(pointer: fine)").matches;
       const cursor = document.getElementById("cursor");
 
@@ -510,10 +525,8 @@
           cursor.style.top = e.clientY + "px";
           if (cursor.style.opacity !== "1") cursor.style.opacity = "1";
         });
-
         const activate = () => cursor.classList.add("active");
         const deactivate = () => cursor.classList.remove("active");
-
         document.addEventListener("mouseover", (e) => {
           const t = e.target.closest(
             'a, button, [role="button"], .brand, .hamburger'
@@ -521,7 +534,6 @@
           if (t) activate();
           else deactivate();
         });
-
         document.addEventListener("mouseout", (e) => {
           const toEl =
             e.relatedTarget && e.relatedTarget.closest
@@ -535,7 +547,7 @@
         cursor.style.display = "none";
       }
 
-      // --- Dölj cirkeln när musen lämnar fönstret, visa när vi kommer tillbaka ---
+      // Dölj/visa cirkel på fönstergräns
       if (cursor) {
         document.addEventListener("mouseleave", () => {
           cursor.style.opacity = "0";
@@ -545,7 +557,7 @@
         });
       }
 
-      // --- Mobilmeny ---
+      // Mobilmeny
       const hamburger = document.getElementById("hamburger");
       const mobileMenu = document.getElementById("mobileMenu");
       function toggleMobileMenu(forceState) {
@@ -559,17 +571,15 @@
       function closeMobileMenu() {
         toggleMobileMenu(false);
       }
-
-      if (hamburger) {
+      if (hamburger)
         hamburger.addEventListener("click", () => toggleMobileMenu());
-      }
       if (mobileMenu) {
         mobileMenu.addEventListener("click", (e) => {
           if (e.target === mobileMenu) closeMobileMenu();
         });
       }
 
-      // --- Ankarlänkar: stäng meny → vänta 2 frames → scrolla (CSS sköter offset) ---
+      // Ankarlänkar
       document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", (e) => {
           const id = a.getAttribute("href");
@@ -578,7 +588,6 @@
           closeMobileMenu();
           const el = document.querySelector(id);
           if (!el) return;
-
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -587,7 +596,7 @@
         });
       });
 
-      // --- Header-logo skift beroende på scroll ---
+      // Logo crossfade on scroll
       const headerEl = document.getElementById("siteHeader");
       const heroColor = document.getElementById("heroColor");
       function updateLogo() {
@@ -599,7 +608,7 @@
       window.addEventListener("load", updateLogo);
       window.addEventListener("resize", updateLogo);
 
-      // --- Uppdatera scroll-padding-top om headerhöjden förändras ---
+      // Uppdatera scroll-padding-top om headerhöjden förändras
       const ro = new ResizeObserver(() => {
         const h = headerEl.getBoundingClientRect().height;
         document.documentElement.style.scrollPaddingTop = `calc(${h}px + env(safe-area-inset-top, 0px))`;
