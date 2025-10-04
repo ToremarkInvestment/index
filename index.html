@@ -30,10 +30,9 @@
         --about-lead-bottom: 140px;
         --sectors-title-gap: 100px;
         --contact-gap: 48px;
-        --contact-email-bottom: 80px;
         --contact-top-extra: 80px;
         --contact-bottom-extra: 120px;
-        --header-h: 70px;
+        --header-h: 70px; /* sticky headerns höjd */
       }
 
       * {
@@ -41,9 +40,17 @@
         margin: 0;
         padding: 0;
       }
+
+      /* LÅT CSS SKÖTA OFFSETEN FÖR ANKARSCROLL */
       html {
-        scroll-behavior: smooth;
+        /* Top-padding för alla in-page scrolls (tar även iOS safe area om den finns) */
+        scroll-padding-top: calc(
+          var(--header-h) + env(safe-area-inset-top, 0px)
+        );
+        /* Sköter smooth i JS, inte här, för att undvika race */
+        scroll-behavior: auto;
       }
+
       body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 400;
@@ -51,7 +58,7 @@
         line-height: 1.6;
         color: #0e0e0e;
         background: #fff;
-        cursor: none;
+        cursor: none; /* döljs på mobil via @media (pointer: coarse) */
       }
       h1,
       h2,
@@ -137,7 +144,7 @@
         margin: 0;
       }
 
-      /* CHANGED: Menylänkar (desktop) vita */
+      /* Menylänkar (desktop) vita */
       nav a {
         color: #ffffff;
       }
@@ -221,19 +228,19 @@
         height: 70vh;
         overflow: hidden;
         background: #000;
-        position: relative; /* behövs för overlay */
+        position: relative; /* för overlay */
       }
       .hero-video video {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      /* 25% overlay #6B1218 */
+      /* 10% overlay #6B1218 */
       .hero-video::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(107, 18, 24, 0.1); /* 10% */
+        background: rgba(107, 18, 24, 0.1);
         pointer-events: none;
       }
 
@@ -270,7 +277,7 @@
       .sectors-title {
         font-size: clamp(22px, 4.2vw, 36px);
         margin-bottom: var(--sectors-title-gap);
-        color: #000000; /* CHANGED: rubriken Primary Sectors */
+        color: #000000;
       }
       .sector-grid {
         display: grid;
@@ -324,28 +331,10 @@
         margin-bottom: 0;
       }
       .email-accent {
-        color: #FFFFFF;
+        color: #ffffff;
       }
 
-      /* Contact spacing (oförändrat) */
-      @media (max-width: 768px) {
-        #contact {
-          padding-top: calc(clamp(60px, 12vw, 140px) * 4.5);
-          padding-bottom: calc(clamp(60px, 12vw, 140px) * 4.5);
-        }
-      }
-      @media (min-width: 769px) {
-        #contact {
-          padding-top: calc(
-            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1
-          );
-          padding-bottom: calc(
-            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1
-          );
-        }
-      }
-
-      /* Custom cursor */
+      /* Custom cursor (desktop) */
       .cursor {
         position: fixed;
         left: 0;
@@ -369,6 +358,22 @@
         cursor: none;
       }
 
+      /* Dölj custom cursor på touch / ”coarse” pointer (mobil/surfplatta) */
+      @media (pointer: coarse) {
+        body {
+          cursor: auto;
+        }
+        .cursor {
+          display: none !important;
+        }
+        a,
+        button,
+        .brand,
+        .hamburger {
+          cursor: auto;
+        }
+      }
+
       @media (max-width: 768px) {
         nav {
           display: none;
@@ -380,6 +385,21 @@
         .card {
           aspect-ratio: 2 / 1;
         }
+        /* Kontaktsektionens extra padding (oförändrat) */
+        #contact {
+          padding-top: calc(clamp(60px, 12vw, 140px) * 4.5);
+          padding-bottom: calc(clamp(60px, 12vw, 140px) * 4.5);
+        }
+      }
+      @media (min-width: 769px) {
+        #contact {
+          padding-top: calc(
+            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1
+          );
+          padding-bottom: calc(
+            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1
+          );
+        }
       }
     </style>
   </head>
@@ -390,11 +410,11 @@
     <!-- Header -->
     <header class="site-header" id="siteHeader">
       <div class="nav">
-        <a href="#top" class="brand">
+        <a href="#top" class="brand" aria-label="Gå till toppen">
           <img src="logo.png" alt="Logotyp" class="logo-default" />
           <img src="logo2.png" alt="" class="logo-scrolled" />
         </a>
-        <nav>
+        <nav aria-label="Huvudmeny">
           <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#sectors">Sectors</a></li>
@@ -409,9 +429,15 @@
           aria-label="Öppna meny"
         ></button>
       </div>
-      <div class="mobile-menu" id="mobileMenu">
+      <div
+        class="mobile-menu"
+        id="mobileMenu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobilmeny"
+      >
         <a href="#about">About</a>
-        <a href="#sectors">Primary Sectors</a>
+        <a href="#sectors">Sectors</a>
         <a href="#contact">Contact</a>
       </div>
     </header>
@@ -461,49 +487,37 @@
     <div class="cursor" id="cursor"></div>
 
     <script>
+      // --- Custom cursor: bara på "fine" pointer (desktop) ---
+      const isFinePointer = window.matchMedia("(pointer: fine)").matches;
       const cursor = document.getElementById("cursor");
-      document.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-      });
-      const activate = () => cursor.classList.add("active");
-      const deactivate = () => cursor.classList.remove("active");
-      document.addEventListener("mouseover", (e) => {
-        const t = e.target.closest(
-          'a, button, [role="button"], .brand, .hamburger'
-        );
-        if (t) activate();
-        else deactivate();
-      });
-      document.addEventListener("mouseout", (e) => {
-        const toEl =
-          e.relatedTarget && e.relatedTarget.closest
-            ? e.relatedTarget.closest(
-                'a, button, [role="button"], .brand, .hamburger'
-              )
-            : null;
-        if (!toEl) deactivate();
-      });
-
-      function scrollWithOffset(target) {
-        const el = document.querySelector(target);
-        if (!el) return;
-        const header = document.querySelector(".site-header");
-        const offset = header ? header.offsetHeight : 0;
-        const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-      document.querySelectorAll('a[href^="#"]').forEach((a) => {
-        a.addEventListener("click", (e) => {
-          const id = a.getAttribute("href");
-          if (id && id.length > 1) {
-            e.preventDefault();
-            closeMobileMenu();
-            scrollWithOffset(id);
-          }
+      if (isFinePointer && cursor) {
+        document.addEventListener("mousemove", (e) => {
+          cursor.style.left = e.clientX + "px";
+          cursor.style.top = e.clientY + "px";
         });
-      });
+        const activate = () => cursor.classList.add("active");
+        const deactivate = () => cursor.classList.remove("active");
+        document.addEventListener("mouseover", (e) => {
+          const t = e.target.closest(
+            'a, button, [role="button"], .brand, .hamburger'
+          );
+          if (t) activate();
+          else deactivate();
+        });
+        document.addEventListener("mouseout", (e) => {
+          const toEl =
+            e.relatedTarget && e.relatedTarget.closest
+              ? e.relatedTarget.closest(
+                  'a, button, [role="button"], .brand, .hamburger'
+                )
+              : null;
+          if (!toEl) deactivate();
+        });
+      } else if (cursor) {
+        cursor.style.display = "none";
+      }
 
+      // --- Mobilmeny ---
       const hamburger = document.getElementById("hamburger");
       const mobileMenu = document.getElementById("mobileMenu");
       function toggleMobileMenu(forceState) {
@@ -522,6 +536,27 @@
         if (e.target === mobileMenu) closeMobileMenu();
       });
 
+      // --- Ankarlänkar: stäng meny -> scrollIntoView (utan manuell offset) ---
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href");
+          if (id && id.length > 1) {
+            e.preventDefault();
+            closeMobileMenu();
+            const el = document.querySelector(id);
+            if (!el) return;
+
+            // Vänta två frames så att meny-stängningen hinner slå igenom
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+              });
+            });
+          }
+        });
+      });
+
+      // --- Header-logo skift beroende på scroll ---
       const headerEl = document.getElementById("siteHeader");
       const heroColor = document.getElementById("heroColor");
       function updateLogo() {
@@ -532,6 +567,13 @@
       window.addEventListener("scroll", updateLogo, { passive: true });
       window.addEventListener("load", updateLogo);
       window.addEventListener("resize", updateLogo);
+
+      // Om headerhöjden ändras (t.ex. p.g.a. font/rendering), uppdatera scroll-padding-top
+      const ro = new ResizeObserver(() => {
+        const h = headerEl.getBoundingClientRect().height;
+        document.documentElement.style.scrollPaddingTop = `calc(${h}px + env(safe-area-inset-top, 0px))`;
+      });
+      ro.observe(headerEl);
     </script>
   </body>
 </html>
