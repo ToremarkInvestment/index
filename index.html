@@ -43,7 +43,9 @@
 
       /* Låt CSS sköta offset för ankar-scroll (hanterar sticky header + iOS safe area) */
       html {
-        scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+        scroll-padding-top: calc(
+          var(--header-h) + env(safe-area-inset-top, 0px)
+        );
         scroll-behavior: auto; /* smooth hanteras i JS för stabilitet */
         /* Fix 1: ge viewporten samma färg som sista sektionen + dämpa bounce */
         background: var(--contact-bg);
@@ -62,14 +64,20 @@
         min-height: 100%;
       }
 
-      h1, h2, h3, p, a, small {
+      h1,
+      h2,
+      h3,
+      p,
+      a,
+      small {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 400;
         letter-spacing: -0.04em;
         text-align: left;
       }
 
-      img, video {
+      img,
+      video {
         display: block;
         max-width: 100%;
         height: auto;
@@ -118,10 +126,18 @@
         width: auto;
         transition: opacity 0.25s ease;
       }
-      .logo-default { opacity: 1; }
-      .logo-scrolled { opacity: 0; }
-      .site-header.scrolled .logo-default { opacity: 0; }
-      .site-header.scrolled .logo-scrolled { opacity: 1; }
+      .logo-default {
+        opacity: 1;
+      }
+      .logo-scrolled {
+        opacity: 0;
+      }
+      .site-header.scrolled .logo-default {
+        opacity: 0;
+      }
+      .site-header.scrolled .logo-scrolled {
+        opacity: 1;
+      }
 
       nav {
         flex: 1;
@@ -136,8 +152,12 @@
       }
 
       /* Menylänkar (desktop) vita */
-      nav a { color: #ffffff; }
-      nav a:hover { text-decoration: underline; }
+      nav a {
+        color: #ffffff;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
 
       /* Hamburger */
       .hamburger {
@@ -159,13 +179,19 @@
         background: #fff;
         transition: transform 0.2s ease, top 0.2s ease;
       }
-      .hamburger::before { top: 13px; }
-      .hamburger::after { top: 25px; }
+      .hamburger::before {
+        top: 13px;
+      }
+      .hamburger::after {
+        top: 25px;
+      }
       .hamburger[aria-expanded="true"]::before {
-        top: 19px; transform: rotate(45deg);
+        top: 19px;
+        transform: rotate(45deg);
       }
       .hamburger[aria-expanded="true"]::after {
-        top: 19px; transform: rotate(-45deg);
+        top: 19px;
+        transform: rotate(-45deg);
       }
 
       .mobile-menu {
@@ -194,7 +220,9 @@
         font-size: clamp(24px, 6vw, 36px);
         color: #ffffff;
       }
-      .mobile-menu a:hover { text-decoration: underline; }
+      .mobile-menu a:hover {
+        text-decoration: underline;
+      }
 
       /* Hero */
       .hero-color {
@@ -234,8 +262,12 @@
         margin-top: var(--about-top-gap);
         margin-bottom: 0;
       }
-      .about-title span { display: block; }
-      .about-title span:last-child { margin-bottom: 60px; }
+      .about-title span {
+        display: block;
+      }
+      .about-title span:last-child {
+        margin-bottom: 60px;
+      }
       .about-lead {
         font-size: clamp(16px, 2.2vw, 20px);
         max-width: 70ch;
@@ -286,17 +318,28 @@
         margin-bottom: var(--contact-gap);
         color: var(--contact-ink);
       }
-      #contact p, #contact a {
+      #contact p,
+      #contact a {
         font-size: clamp(22px, 4.2vw, 36px);
         line-height: 1.3;
         color: var(--contact-ink);
         text-decoration: none;
       }
-      #contact a:hover { text-decoration: underline; }
-      .contact-company { margin-bottom: 0; }
-      .contact-city { margin-bottom: var(--contact-gap); }
-      .contact-email { margin-bottom: 0; }
-      .email-accent { color: #ffffff; }
+      #contact a:hover {
+        text-decoration: underline;
+      }
+      .contact-company {
+        margin-bottom: 0;
+      }
+      .contact-city {
+        margin-bottom: var(--contact-gap);
+      }
+      .contact-email {
+        margin-bottom: 0;
+      }
+      .email-accent {
+        color: #ffffff;
+      }
 
       /* Fix 2: fyll ut iOS safe-area i botten så ingen kant syns */
       #contact::after {
@@ -320,21 +363,44 @@
         z-index: 10000;
         opacity: 1;
       }
-      .cursor.active { transform: translate(-50%, -50%) scale(2.2); }
-      a, button, .brand, .hamburger { cursor: none; }
+      .cursor.active {
+        transform: translate(-50%, -50%) scale(2.2);
+      }
+      a,
+      button,
+      .brand,
+      .hamburger {
+        cursor: none;
+      }
 
       /* Dölj custom cursor på touch / ”coarse” pointer (mobil/surfplatta) */
       @media (pointer: coarse) {
-        body { cursor: auto; }
-        .cursor { display: none !important; }
-        a, button, .brand, .hamburger { cursor: auto; }
+        body {
+          cursor: auto;
+        }
+        .cursor {
+          display: none !important;
+        }
+        a,
+        button,
+        .brand,
+        .hamburger {
+          cursor: auto;
+        }
       }
 
       /* Mobil */
       @media (max-width: 768px) {
-        nav { display: none; }
-        .hamburger { display: block; margin-left: auto; }
-        .card { aspect-ratio: 2 / 1; }
+        nav {
+          display: none;
+        }
+        .hamburger {
+          display: block;
+          margin-left: auto;
+        }
+        .card {
+          aspect-ratio: 2 / 1;
+        }
 
         #contact {
           /* Fix 3: minska onödig extra scroll i botten */
@@ -346,8 +412,12 @@
       /* Desktop */
       @media (min-width: 769px) {
         #contact {
-          padding-top: calc((clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 0.95);
-          padding-bottom: calc((clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1);
+          padding-top: calc(
+            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 0.95
+          );
+          padding-bottom: calc(
+            (clamp(60px, 12vw, 140px) + var(--contact-top-extra)) * 1.1
+          );
         }
       }
     </style>
@@ -451,14 +521,20 @@
         const deactivate = () => cursor.classList.remove("active");
 
         document.addEventListener("mouseover", (e) => {
-          const t = e.target.closest('a, button, [role="button"], .brand, .hamburger');
-          if (t) activate(); else deactivate();
+          const t = e.target.closest(
+            'a, button, [role="button"], .brand, .hamburger'
+          );
+          if (t) activate();
+          else deactivate();
         });
 
         document.addEventListener("mouseout", (e) => {
-          const toEl = e.relatedTarget && e.relatedTarget.closest
-            ? e.relatedTarget.closest('a, button, [role="button"], .brand, .hamburger')
-            : null;
+          const toEl =
+            e.relatedTarget && e.relatedTarget.closest
+              ? e.relatedTarget.closest(
+                  'a, button, [role="button"], .brand, .hamburger'
+                )
+              : null;
           if (!toEl) deactivate();
         });
       } else if (cursor) {
@@ -467,8 +543,12 @@
 
       // --- Dölj cirkeln när musen lämnar fönstret, visa när vi kommer tillbaka ---
       if (cursor) {
-        document.addEventListener("mouseleave", () => { cursor.style.opacity = "0"; });
-        document.addEventListener("mouseenter", () => { cursor.style.opacity = "1"; });
+        document.addEventListener("mouseleave", () => {
+          cursor.style.opacity = "0";
+        });
+        document.addEventListener("mouseenter", () => {
+          cursor.style.opacity = "1";
+        });
       }
 
       // --- Mobilmeny ---
@@ -482,7 +562,9 @@
         mobileMenu.classList.toggle("open", willOpen);
         hamburger.setAttribute("aria-expanded", String(willOpen));
       }
-      function closeMobileMenu() { toggleMobileMenu(false); }
+      function closeMobileMenu() {
+        toggleMobileMenu(false);
+      }
 
       if (hamburger) {
         hamburger.addEventListener("click", () => toggleMobileMenu());
@@ -526,8 +608,7 @@
       // --- Uppdatera scroll-padding-top om headerhöjden förändras ---
       const ro = new ResizeObserver(() => {
         const h = headerEl.getBoundingClientRect().height;
-        document.documentElement.style.scrollPaddingTop =
-          `calc(${h}px + env(safe-area-inset-top, 0px))`;
+        document.documentElement.style.scrollPaddingTop = `calc(${h}px + env(safe-area-inset-top, 0px))`;
       });
       ro.observe(headerEl);
     </script>
